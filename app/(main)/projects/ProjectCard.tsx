@@ -1,8 +1,8 @@
 'use client'
 
-import React from 'react'
-import Image from 'next/image'
 import { AnimatePresence, useMotionTemplate, useMotionValue, motion } from 'framer-motion'
+import Image from 'next/image'
+import React from 'react'
 
 import { ExternalLinkIcon } from '~/assets'
 import { Card } from '~/components/ui/Card'
