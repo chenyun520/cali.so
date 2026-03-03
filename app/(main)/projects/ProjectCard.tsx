@@ -1,6 +1,6 @@
 'use client'
 
-import { AnimatePresence, useMotionTemplate, useMotionValue, motion } from 'framer-motion'
+import { AnimatePresence, motion,useMotionTemplate, useMotionValue } from 'framer-motion'
 import Image from 'next/image'
 import React from 'react'
 
