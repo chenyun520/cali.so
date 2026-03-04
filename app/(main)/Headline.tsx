@@ -4,7 +4,6 @@ import { motion } from 'framer-motion'
 import Balancer from 'react-wrap-balancer'
 
 import { SparkleIcon, UserSecurityIcon } from '~/assets'
-import { PeekabooLink } from '~/components/links/PeekabooLink'
 import { SocialLink } from '~/components/links/SocialLink'
 
 function Developer() {
@@ -80,10 +79,7 @@ export function Headline() {
         }}
       >
         <Balancer>
-          我是 Chenyun，
-          <PeekabooLink href="https://zolplay.com">佐玩</PeekabooLink>
-          精益工程师，致力于通过精益方法论创造高质量的产品和工作环境。
-          我热爱开发，设计，创新，享受生活，以及在未知领域中探索。
+          我是 Chenyun，精益工程师。我热爱开发，设计，创新，享受生活，以及在未知领域中探索。
         </Balancer>
       </motion.p>
       <motion.div
@@ -99,33 +95,12 @@ export function Headline() {
         }}
       >
         <SocialLink
-          href="https://chenyun.so/twitter"
-          aria-label="我的推特"
-          platform="twitter"
-        />
-        <SocialLink
-          href="https://chenyun.so/youtube"
-          aria-label="我的 YouTube"
-          platform="youtube"
-        />
-        <SocialLink
-          href="https://chenyun.so/bilibili"
-          aria-label="我的 Bilibili"
-          platform="bilibili"
-        />
-        <SocialLink
-          href="https://chenyun.so/github"
-          aria-label="我的 GitHub"
-          platform="github"
-        />
-        <SocialLink
-          href="https://chenyun.so/tg"
+          href="https://t.me/+6048587342"
           aria-label="我的 Telegram"
           platform="telegram"
         />
-        <SocialLink href="/feed.xml" platform="rss" aria-label="RSS 订阅" />
         <SocialLink
-          href="mailto:hi@chenyun.so"
+          href="mailto:gaolujie26@gmail.com"
           aria-label="我的邮箱"
           platform="mail"
         />
