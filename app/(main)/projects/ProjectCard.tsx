@@ -87,8 +87,11 @@ export function ProjectCard({ project }: { project: Project }) {
                 href="/learning-cert-presentation.html"
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={(e) => e.preventDefault()}
                 className="inline-flex items-center gap-2 text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-lime-600 dark:hover:text-lime-400 transition-colors"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  window.open('/learning-cert-presentation.html', '_blank')
+                }}
               >
                 <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
