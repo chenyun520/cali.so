@@ -16,7 +16,7 @@ export const blogPostState = proxy<{
 })
 
 export function addComment(comment: PostIDLessCommentDto) {
-  blogPostState.comments.push(comment)
+  blogPostState.comments = [...blogPostState.comments, comment]
 }
 
 export function replyTo(comment: PostIDLessCommentDto) {
