@@ -9,7 +9,7 @@ import { urlFor } from '~/sanity/lib/image'
 import type { Project } from '~/sanity/schemas/project'
 
 export function ProjectCard({ project }: { project: Project }) {
-  const { _id, url, icon, name, description } = project
+  const { url, icon, name, description } = project
 
   // Check if this is the learning certification project
   const isLearningProject = url.includes('levelcertification.pages.dev')

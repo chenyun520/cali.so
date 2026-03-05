@@ -1,10 +1,10 @@
 'use client'
 
-import Link from 'next/link'
 import Image from 'next/image'
+import Link from 'next/link'
 
-import type { Project } from '~/sanity/schemas/project'
 import { urlFor } from '~/sanity/lib/image'
+import type { Project } from '~/sanity/schemas/project'
 
 export function HomeProjectList({ projects, limit = 9 }: { projects: Project[]; limit?: number }) {
   return (
