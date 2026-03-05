@@ -42,6 +42,11 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
           UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+          # Email 通知相关环境变量
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          SITE_NOTIFICATION_EMAIL_TO: ${{ secrets.SITE_NOTIFICATION_EMAIL_TO }}
+          NEXT_PUBLIC_SITE_EMAIL_FROM: ${{ secrets.NEXT_PUBLIC_SITE_EMAIL_FROM }}
+          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/pages-action@v1
