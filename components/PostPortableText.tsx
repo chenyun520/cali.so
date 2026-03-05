@@ -31,6 +31,7 @@ const components: PortableTextComponents = {
     image: PortableTextImage,
     tweet: PortableTextTweet,
     codeBlock: PortableTextCodeBlock,
+    code: PortableTextCodeBlock,
   },
 
   marks: {

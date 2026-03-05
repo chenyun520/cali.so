@@ -79,7 +79,26 @@ export function Headline() {
         }}
       >
         <Balancer>
-          我是 Chenyun，精益工程师。我热爱开发，设计，创新，享受生活，以及在未知领域中探索。
+          我是 Chenyun，精益工程师，一位<span className="relative inline-block">
+            <span className="relative z-10 bg-gradient-to-r from-lime-500 to-emerald-500 bg-clip-text text-transparent font-semibold">有趣</span>
+            <span className="absolute inset-0 bg-lime-400/30 blur-lg -z-0" />
+          </span>的精益工程师。
+        </Balancer>
+      </motion.p>
+      <motion.p
+        className="mt-3 text-base text-zinc-600 dark:text-zinc-400"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          type: 'spring',
+          damping: 30,
+          stiffness: 85,
+          duration: 0.3,
+          delay: 0.15,
+        }}
+      >
+        <Balancer>
+          我热爱开发、设计、创新，享受生活，以及在未知领域中探索。
         </Balancer>
       </motion.p>
       <motion.div

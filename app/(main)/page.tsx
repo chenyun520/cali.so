@@ -3,12 +3,14 @@ import React from 'react'
 import { BlogPosts } from '~/app/(main)/blog/BlogPosts'
 import { Headline } from '~/app/(main)/Headline'
 import { Photos } from '~/app/(main)/Photos'
-import { PencilSwooshIcon } from '~/assets'
+import { HomeProjectList } from '~/app/(main)/projects/HomeProjectList'
+import { PencilSwooshIcon, PresentationIcon } from '~/assets'
 import { Container } from '~/components/ui/Container'
 import { getSettings } from '~/sanity/queries'
 
 export default async function BlogHomePage() {
   const settings = await getSettings()
+  const projects = settings?.projects || []
 
   return (
     <>
@@ -19,13 +21,23 @@ export default async function BlogHomePage() {
       {settings?.heroPhotos && <Photos photos={settings.heroPhotos} />}
 
       <Container className="mt-24 md:mt-28">
-        <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
-          <div className="flex flex-col gap-6 pt-6">
+        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-12 lg:grid-cols-[1fr_auto]">
+          {/* 左侧：近期文章 */}
+          <div className="flex flex-col gap-6">
             <h2 className="flex items-center text-sm font-semibold text-zinc-900 dark:text-zinc-100">
               <PencilSwooshIcon className="h-5 w-5 flex-none" />
               <span className="ml-2">近期文章</span>
             </h2>
             <BlogPosts />
+          </div>
+
+          {/* 右侧：项目展示 - 紧凑的方块网格 */}
+          <div className="flex flex-col gap-4 lg:w-48">
+            <h2 className="flex items-center text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+              <PresentationIcon className="h-5 w-5 flex-none" />
+              <span className="ml-2">项目展示</span>
+            </h2>
+            <HomeProjectList projects={projects} limit={9} />
           </div>
         </div>
       </Container>

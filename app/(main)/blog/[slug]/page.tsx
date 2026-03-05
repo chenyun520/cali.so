@@ -65,22 +65,16 @@ export default async function BlogPage({
     views = 30578
   }
 
-  let reactions: number[] = []
+  let reactions: number[] = [0, 0, 0, 0]
   try {
-    if (env.VERCEL_ENV === 'production') {
-      const res = await fetch(url(`/api/reactions?id=${post._id}`), {
-        next: {
-          tags: [`reactions:${post._id}`],
-        },
-      })
-      const data = await res.json()
-      if (Array.isArray(data)) {
-        reactions = data
-      }
-    } else {
-      reactions = Array.from({ length: 4 }, () =>
-        Math.floor(Math.random() * 50000)
-      )
+    const res = await fetch(url(`/api/reactions?id=${post._id}`), {
+      next: {
+        tags: [`reactions:${post._id}`],
+      },
+    })
+    const data = await res.json()
+    if (Array.isArray(data) && data.length > 0) {
+      reactions = data
     }
   } catch (error) {
     console.error(error)
@@ -101,7 +95,7 @@ export default async function BlogPage({
       post={post}
       views={views}
       relatedViews={relatedViews}
-      reactions={reactions.length > 0 ? reactions : undefined}
+      reactions={reactions}
     />
   )
 }
