@@ -41,7 +41,7 @@ export const getLatestBlogPostsQuery = ({
         url,
         ${
           forDisplay
-            ? '"lqip": metadata.lqip, "dominant": metadata.palette.dominant,'
+            ? '"lqip": coalesce(metadata.lqip, ""), "dominant": coalesce(metadata.palette.dominant, { background: "#000000", foreground: "#ffffff" }),'
             : ''
         }
       }
@@ -64,7 +64,7 @@ export const getBlogPostQuery = groq`
       ...,
       _type == "image" => {
         "url": asset->url,
-        "lqip": asset->metadata.lqip,
+        "lqip": coalesce(asset->metadata.lqip, ""),
         "dimensions": asset->metadata.dimensions,
         ...
       }
@@ -74,7 +74,8 @@ export const getBlogPostQuery = groq`
       _ref,
       asset->{
         url,
-        "lqip": metadata.lqip
+        "lqip": coalesce(metadata.lqip, ""),
+        "dominant": coalesce(metadata.palette.dominant, { background: "#000000", foreground: "#ffffff" })
       }
     },
     "related": *[_type == "post" && slug.current != $slug && count(categories[@._ref in ^.^.categories[]._ref]) > 0] | order(publishedAt desc, _createdAt desc) [0..2] {
@@ -88,8 +89,8 @@ export const getBlogPostQuery = groq`
         _ref,
         asset->{
           url,
-          "lqip": metadata.lqip,
-          "dominant": metadata.palette.dominant
+          "lqip": coalesce(metadata.lqip, ""),
+          "dominant": coalesce(metadata.palette.dominant, { background: "#000000", foreground: "#ffffff" })
         }
       },
     }
@@ -170,8 +171,8 @@ export const getBlogPostsByCategoryQuery = (
       _ref,
       asset->{
         url,
-        "lqip": metadata.lqip,
-        "dominant": metadata.palette.dominant
+        "lqip": coalesce(metadata.lqip, ""),
+        "dominant": coalesce(metadata.palette.dominant, { background: "#000000", foreground: "#ffffff" })
       }
     }
   }

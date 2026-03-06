@@ -21,8 +21,8 @@ export function BlogPostCard({ post, views }: { post: Post; views: number }) {
       className="group relative flex w-full transform-gpu flex-col rounded-3xl bg-transparent ring-2 ring-[--post-image-bg] transition-transform hover:-translate-y-0.5"
       style={
         {
-          '--post-image-fg': mainImage.asset.dominant?.foreground,
-          '--post-image-bg': mainImage.asset.dominant?.background,
+          '--post-image-fg': mainImage.asset.dominant?.foreground || '#ffffff',
+          '--post-image-bg': mainImage.asset.dominant?.background || '#000000',
           '--post-image': `url(${mainImage.asset.url}`,
         } as React.CSSProperties
       }
@@ -32,8 +32,8 @@ export function BlogPostCard({ post, views }: { post: Post; views: number }) {
           src={mainImage.asset.url}
           alt=""
           className="rounded-t-3xl object-cover"
-          placeholder="blur"
-          blurDataURL={mainImage.asset.lqip}
+          placeholder={mainImage.asset.lqip ? 'blur' : 'empty'}
+          blurDataURL={mainImage.asset.lqip ?? undefined}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw"
         />
