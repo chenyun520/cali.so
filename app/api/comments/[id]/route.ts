@@ -1,4 +1,4 @@
-import { clerkClient, currentUser } from '@clerk/nextjs'
+import { auth, clerkClient, currentUser } from '@clerk/nextjs'
 import { Ratelimit } from '@upstash/ratelimit'
 import { asc, eq } from 'drizzle-orm'
 import { type NextRequest, NextResponse } from 'next/server'
@@ -31,6 +31,7 @@ function getKey(id: string) {
 
 type Params = { params: { id: string } }
 export async function GET(req: NextRequest, { params }: Params) {
+  // GET 是公开的，不需要认证检查
   try {
     const postId = params.id
 
@@ -67,7 +68,8 @@ export async function GET(req: NextRequest, { params }: Params) {
       )
     )
   } catch (error) {
-    return NextResponse.json({ error }, { status: 400 })
+    console.error('[comments] GET error:', error)
+    return NextResponse.json({ error: 'Failed to fetch comments' }, { status: 500 })
   }
 }
 
@@ -80,9 +82,18 @@ const CreateCommentSchema = z.object({
 })
 
 export async function POST(req: NextRequest, { params }: Params) {
+  // 使用 auth() 检查认证状态
+  const { userId } = auth()
+
+  if (!userId) {
+    console.log('[comments] No userId from auth()')
+    return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
+  }
+
   const user = await currentUser()
   if (!user) {
-    return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
+    console.log('[comments] No user from currentUser()')
+    return NextResponse.json({ error: 'User not found' }, { status: 401 })
   }
 
   const postId = params.id

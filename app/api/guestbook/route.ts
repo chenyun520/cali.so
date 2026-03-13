@@ -18,6 +18,7 @@ function getKey(id?: string) {
 }
 
 export async function GET(req: NextRequest) {
+  // GET 是公开的，不需要认证检查
   try {
     const { success } = await ratelimit.limit(getKey(req.ip ?? ''))
     if (!success) {
@@ -28,7 +29,8 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(await fetchGuestbookMessages())
   } catch (error) {
-    return NextResponse.json({ error }, { status: 400 })
+    console.error('[guestbook] GET error:', error)
+    return NextResponse.json({ error: 'Failed to fetch messages' }, { status: 500 })
   }
 }
 
