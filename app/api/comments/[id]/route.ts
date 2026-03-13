@@ -1,4 +1,4 @@
-import { auth, clerkClient, currentUser } from '@clerk/nextjs'
+import { clerkClient, currentUser } from '@clerk/nextjs'
 import { Ratelimit } from '@upstash/ratelimit'
 import { asc, eq } from 'drizzle-orm'
 import { type NextRequest, NextResponse } from 'next/server'
@@ -82,18 +82,12 @@ const CreateCommentSchema = z.object({
 })
 
 export async function POST(req: NextRequest, { params }: Params) {
-  // 使用 auth() 检查认证状态
-  const { userId } = auth()
-
-  if (!userId) {
-    console.log('[comments] No userId from auth()')
-    return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
-  }
-
+  // 使用 currentUser() 获取当前用户
   const user = await currentUser()
+
   if (!user) {
     console.log('[comments] No user from currentUser()')
-    return NextResponse.json({ error: 'User not found' }, { status: 401 })
+    return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
   }
 
   const postId = params.id

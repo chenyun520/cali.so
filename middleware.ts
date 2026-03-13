@@ -74,5 +74,8 @@ export default authMiddleware({
     '/api/tweet/(.*)',
     '/api/favicon',
     '/api/newsletter',
+    // 需要认证的 API 路由 (在路由处理器中手动检查)
+    '/api/guestbook',
+    '/api/comments(.*)',
   ],
 })

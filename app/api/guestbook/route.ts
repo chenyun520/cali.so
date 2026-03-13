@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs'
+import { currentUser } from '@clerk/nextjs'
 import { type NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 
@@ -39,15 +39,17 @@ const SignGuestbookSchema = z.object({
 })
 
 export async function POST(req: NextRequest) {
-  // 使用 auth() 获取认证状态
-  const { userId } = auth()
+  // 使用 currentUser() 获取当前用户
+  const user = await currentUser()
 
-  console.log('[guestbook] POST - userId:', userId)
+  console.log('[guestbook] POST - user:', user?.id)
 
-  if (!userId) {
-    console.log('[guestbook] No userId - returning 401')
+  if (!user) {
+    console.log('[guestbook] No user - returning 401')
     return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
   }
+
+  const userId = user.id
 
   const { success } = await ratelimit.limit(getKey(userId))
   if (!success) {
