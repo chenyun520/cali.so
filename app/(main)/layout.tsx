@@ -1,4 +1,5 @@
 import './blog/[slug]/blog.css'
+import './bb8-toggle.css'
 
 import { Analytics } from '@vercel/analytics/react'
 import { Suspense } from 'react'

@@ -20,53 +20,209 @@ export const metadata = {
   },
 }
 
+// 3D 卡片组件
+function Card3D({
+  title,
+  description,
+  items,
+  price,
+  buttonText,
+  buttonHref,
+  accentColor = 'from-lime-400 to-emerald-500',
+}: {
+  title: string
+  description: string
+  items: string[]
+  price?: string
+  buttonText: string
+  buttonHref: string
+  accentColor?: string
+}) {
+  return (
+    <div className="group relative" style={{ perspective: 1000 }}>
+      <div
+        className={`relative h-full rounded-[50px] overflow-hidden
+                     bg-gradient-to-br ${accentColor}
+                     shadow-[rgba(5,71,17,0)_40px_50px_25px_-40px,rgba(5,71,17,0.2)_0px_25px_25px_-5px]
+                     transition-all duration-500
+                     hover:shadow-[rgba(5,71,17,0.3)_30px_50px_25px_-40px,rgba(5,71,17,0.1)_0px_25px_30px_0px]
+                     hover:rotate-3`}
+      >
+        {/* Glass layer */}
+        <div
+          className="absolute inset-2 rounded-[55px] rounded-tr-[100%]
+                       bg-gradient-to-b from-white/80 via-white/60 to-white/30
+                       dark:from-zinc-900/80 dark:via-zinc-900/60 dark:to-zinc-900/30
+                       border-l border-b border-white/50 dark:border-white/10"
+        />
+
+        {/* Decorative circles */}
+        <div className="absolute top-2 right-2 w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm" />
+        <div className="absolute top-5 right-5 w-16 h-16 rounded-full bg-white/15 backdrop-blur-sm" />
+        <div className="absolute top-8 right-8 w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm" />
+
+        {/* Content */}
+        <div className="relative p-8 h-full flex flex-col">
+          {/* 标题 */}
+          <h3 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100 mb-3">
+            {title}
+          </h3>
+
+          {/* 描述 */}
+          <p className="text-sm text-zinc-700/80 dark:text-zinc-300/80 leading-relaxed mb-4">
+            {description}
+          </p>
+
+          {/* 项目列表 */}
+          <ul className="flex-grow space-y-2 mb-6">
+            {items.map((item, index) => (
+              <li key={index} className="flex items-start gap-2 text-sm text-zinc-700 dark:text-zinc-300">
+                <svg className="h-5 w-5 text-lime-600 dark:text-lime-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+
+          {/* 价格 */}
+          {price && (
+            <div className="mb-4 text-center">
+              <span className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+                {price}
+              </span>
+            </div>
+          )}
+
+          {/* 按钮 */}
+          <a
+            href={buttonHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3
+                       text-white uppercase cursor-pointer
+                       border-2 border-black
+                       font-semibold text-sm
+                       bg-yellow-400
+                       rounded-[50px]
+                       relative overflow-hidden
+                       transition-all duration-500
+                       hover:shadow-lg
+                       active:scale-95
+                       group/btn"
+          >
+            {/* Icon */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 36 36"
+              width="24px"
+              height="24px"
+              className="transition-transform duration-500 group-hover/btn:scale-150 group-hover/btn:translate-x-2"
+            >
+              <rect width={36} height={36} x={0} y={0} fill="#fdd835" />
+              <path
+                fill="#e53935"
+                d="M38.67,42H11.52C11.27,40.62,11,38.57,11,36c0-5,0-11,0-11s1.44-7.39,3.22-9.59 c1.67-2.06,2.76-3.48,6.78-4.41c3-0.7,7.13-0.23,9,1c2.15,1.42,3.37,6.67,3.81,11.29c1.49-0.3,5.21,0.2,5.5,1.28 C40.89,30.29,39.48,38.31,38.67,42z"
+              />
+            </svg>
+            <span className="transition-all duration-500 group-hover/btn:translate-x-4">
+              {buttonText}
+            </span>
+            <span className="absolute left-2 -translate-x-12 opacity-0 transition-all duration-500 group-hover/btn:translate-x-0 group-hover/btn:opacity-100">
+              GO!
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function AskMeAnythingPage() {
   return (
     <Container className="mt-16 sm:mt-24">
-      <header className="max-w-2xl">
+      <header className="max-w-2xl mx-auto text-center mb-16">
         <h1 className="text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl">
-          Ask Me Anything / 一对一咨询
+          Ask Me Anything
         </h1>
         <p className="my-6 text-base text-zinc-600 dark:text-zinc-400">
           <Balancer>{description}</Balancer>
         </p>
       </header>
 
-      <article className="prose dark:prose-invert">
-        <h2>咨询内容</h2>
-        <p>我可以为你解答以下相关的问题：</p>
-        <ul>
-          <li>
-            <b>前端/全栈开发</b>
-            ：工作难找，或是寻求职场建议？想提升自己的工程师水平？还是想锐评
-            React vs Vue？
-          </li>
-          <li>
-            <b>UI/UX 设计</b>：不知道如何开始学习设计？想提升自己的设计水平？
-          </li>
-          <li>
-            <b>精益课程</b>：推出《目视化管理》、《八大浪费》等等精益系列小课堂。
-          </li>
-          <li>
-            <b>英语技能</b>：英语能力不足，想提高自己的英语水平？和我一起学习与考试。
-          </li>
-          <li>
-            <b>其他</b>
-            ：MES SAP系统开发运维相关的问题都可以帮助你解答一些其他的问题。
-          </li>
-        </ul>
+      {/* 两大模块 */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        {/* 模块一：一对一咨询 */}
+        <Card3D
+          title="一对一咨询"
+          description="我可以为你解答以下相关的问题，帮助你解决技术难题和职业发展困惑："
+          items={[
+            '前端/全栈开发：工作难找、职场建议、技术提升',
+            'UI/UX 设计：如何开始学习设计、提升设计水平',
+            '精益课程：《目视化管理》、《八大浪费》等系列课程',
+            '英语技能：英语学习方法、考试技巧',
+            'MES/SAP 系统开发运维相关咨询',
+          ]}
+          price="¥150/30分钟 · ¥300/60分钟"
+          buttonText="立即预约咨询"
+          buttonHref="https://t.me/+6048587342"
+          accentColor="from-lime-400 to-emerald-500"
+        />
 
-        <h2>定价</h2>
-        <p>我的一对一咨询的价格为：</p>
-        <ul>
-          <li>
-            <strong>¥150 - 30分钟</strong>
-          </li>
-          <li>
-            <strong>¥300 - 60分钟</strong>
-          </li>
-        </ul>
-      </article>
+        {/* 模块二：定制软件系统开发 */}
+        <Card3D
+          title="定制软件系统开发"
+          description="提供专业的定制软件开发服务，从需求分析到上线部署，全程跟进："
+          items={[
+            '企业级 MES 系统定制开发',
+            'SAP 系统集成与二次开发',
+            'Web 应用开发（React/Next.js/Vue）',
+            '移动端应用开发',
+            'UI/UX 设计与交互优化',
+            '系统运维与技术支持',
+          ]}
+          price="根据项目需求报价"
+          buttonText="联系了解详情"
+          buttonHref="https://t.me/+6048587342"
+          accentColor="from-cyan-400 to-blue-500"
+        />
+      </div>
+
+      {/* 附加说明 */}
+      <div className="mt-16 max-w-2xl mx-auto">
+        <div className="rounded-2xl border border-zinc-100 dark:border-zinc-700/40 p-6
+                        bg-zinc-50 dark:bg-zinc-800/50">
+          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-4">
+            联系方式
+          </h2>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <a
+              href="https://t.me/+6048587342"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
+                         bg-blue-500 text-white font-medium
+                         hover:bg-blue-600 transition-colors"
+            >
+              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+              </svg>
+              Telegram
+            </a>
+            <a
+              href="mailto:gaolujie26@gmail.com"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg
+                         bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-200 font-medium
+                         hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors"
+            >
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              Email
+            </a>
+          </div>
+        </div>
+      </div>
     </Container>
   )
 }

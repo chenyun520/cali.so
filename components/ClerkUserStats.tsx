@@ -16,43 +16,9 @@ interface UserStatsProps {
   fallback?: React.ReactNode
 }
 
-// 硬编码的测试用户数据（基于 Clerk 测试账户）
-const HARDCODED_USERS: ClerkUser[] = [
-  {
-    id: 'user_1',
-    full_name: '咩咩 羊',
-    image_url: 'https://img.clerk.com/eyJ0eXBlIjoiZGVmYXVsdCIsImlpZCI6Imluc18zQVBxVnd6Sm9aSmw4VWlMV0pZTjh2aE5SdFMiLCJyaWQiOiJ1c2VyXzNBVmEwd3c2U2ZsNVVJY1BVTHpvWlJINTN6SSIsImluaXRpYWxzIjoi5ZKp576KIn0',
-    email_addresses: [{ email_address: '1291367517@qq.com' }],
-  },
-  {
-    id: 'user_2',
-    full_name: 'leqing qu',
-    image_url: 'https://images.clerk.dev/uploaded/img_3AVWHQTmqPHlTEz9RgUCnGWBctt',
-    email_addresses: [{ email_address: '18235083473@163.com' }],
-  },
-  {
-    id: 'user_3',
-    full_name: 'qu qu',
-    image_url: 'https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18zQVQ0TnQzZzN1cEt1UEhQZmhGRkVqellBRWsifQ',
-    email_addresses: [{ email_address: 'ququ2399@gmail.com' }],
-  },
-  {
-    id: 'user_4',
-    full_name: '诚 陈',
-    image_url: 'https://img.clerk.com/eyJ0eXBlIjoiZGVmYXVsdCIsImlpZCI6Imluc18zQVBxVnd6Sm9aSmw4VWlMV0pZTjh2aE5SdFMiLCJyaWQiOiJ1c2VyXzNBU3hMYk5ORnk1VWNJUDJEUE1IQXloWU9TWSIsImluaXRpYWxzIjoi6K+a6ZmIIn0',
-    email_addresses: [{ email_address: '1178115320@qq.com' }],
-  },
-  {
-    id: 'user_5',
-    full_name: '云 陈',
-    image_url: 'https://images.clerk.dev/uploaded/img_3AVH1LrnN5H4l3f3rJpu6KLubci',
-    email_addresses: [{ email_address: 'gaolujie26@gmail.com' }],
-  },
-]
-
 export function ClerkUserStats({ render, fallback }: UserStatsProps) {
-  const [users, setUsers] = useState<ClerkUser[]>(HARDCODED_USERS)
-  const [totalUsers, setTotalUsers] = useState(HARDCODED_USERS.length)
+  const [users, setUsers] = useState<ClerkUser[]>([])
+  const [totalUsers, setTotalUsers] = useState(0)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -61,15 +27,17 @@ export function ClerkUserStats({ render, fallback }: UserStatsProps) {
         const response = await fetch('/api/clerk-users')
         if (response.ok) {
           const data = await response.json() as { users: ClerkUser[], totalCount: number }
-          const fetchedUsers = data.users || []
-          // 只有当 API 返回有效用户时才使用，否则使用硬编码数据
-          if (fetchedUsers.length > 0) {
-            setUsers(fetchedUsers)
-            setTotalUsers(data.totalCount || fetchedUsers.length)
-          }
+          // 直接使用 API 返回的数据
+          setUsers(data.users || [])
+          // 使用 totalCount 或 users.length 作为真实人数
+          setTotalUsers(data.totalCount || data.users?.length || 0)
+        } else {
+          console.error('Failed to fetch users:', response.status)
+          setTotalUsers(0)
         }
       } catch (error) {
-        console.log('API fetch failed, using hardcoded users')
+        console.error('Error fetching users:', error)
+        setTotalUsers(0)
       } finally {
         setLoading(false)
       }
