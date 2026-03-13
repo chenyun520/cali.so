@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
       userInfo: {
         firstName: user.firstName,
         lastName: user.lastName,
-        imageUrl: user.imageUrl,
+        imageUrl: user.imageUrl || null,
       },
     }
 
@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
           link: url(`/guestbook`).href,
           userFirstName: user.firstName,
           userLastName: user.lastName,
-          userImageUrl: user.imageUrl,
+          userImageUrl: user.imageUrl || undefined,
           commentContent: message,
         }),
       })

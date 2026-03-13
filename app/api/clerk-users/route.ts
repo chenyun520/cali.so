@@ -5,6 +5,7 @@ export async function GET() {
     const secretKey = process.env.CLERK_SECRET_KEY
 
     if (!secretKey) {
+      console.error('CLERK_SECRET_KEY not configured')
       return NextResponse.json(
         { error: 'Clerk secret key not configured', users: [], totalCount: 0 },
         { status: 500 }
@@ -20,6 +21,8 @@ export async function GET() {
     })
 
     if (!response.ok) {
+      const errorText = await response.text()
+      console.error('Clerk API error:', response.status, errorText)
       return NextResponse.json(
         { error: 'Failed to fetch users from Clerk', users: [], totalCount: 0 },
         { status: response.status }
@@ -28,11 +31,12 @@ export async function GET() {
 
     const data = await response.json()
 
-    // Clerk API returns an array directly or data.data
+    // Clerk API returns: { data: [...], totalCount: number }
     const users = Array.isArray(data) ? data : (data?.data || [])
+    // totalCount is returned directly by Clerk API when count=true
+    const totalCount = data?.totalCount ?? data?.total_count ?? users.length
 
-    // Get total count - Clerk returns totalCount or total_count in the response
-    const totalCount = data?.totalCount || data?.total_count || users.length
+    console.log('Clerk API response - users count:', users.length, 'totalCount:', totalCount)
 
     // Return only the data we need
     return NextResponse.json({

@@ -118,7 +118,7 @@ export async function POST(req: NextRequest, { params }: Params) {
       userInfo: {
         firstName: user.firstName,
         lastName: user.lastName,
-        imageUrl: user.imageUrl,
+        imageUrl: user.imageUrl || null,
       },
       parentId: parentId ? (parentId as number) : null,
     }
@@ -147,7 +147,7 @@ export async function POST(req: NextRequest, { params }: Params) {
               postImageUrl: post.imageUrl,
               userFirstName: user.firstName,
               userLastName: user.lastName,
-              userImageUrl: user.imageUrl,
+              userImageUrl: user.imageUrl || undefined,
               commentContent: body.text,
             }),
           })
