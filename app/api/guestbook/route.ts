@@ -1,4 +1,4 @@
-import { currentUser } from '@clerk/nextjs'
+import { auth, currentUser } from '@clerk/nextjs'
 import { type NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 
@@ -37,9 +37,19 @@ const SignGuestbookSchema = z.object({
 })
 
 export async function POST(req: NextRequest) {
+  // 使用 auth() 获取认证状态
+  const { userId } = auth()
+
+  if (!userId) {
+    console.log('[guestbook] No userId from auth()')
+    return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
+  }
+
+  // 获取完整用户信息
   const user = await currentUser()
   if (!user) {
-    return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
+    console.log('[guestbook] No user from currentUser()')
+    return NextResponse.json({ error: 'User not found' }, { status: 401 })
   }
 
   const { success } = await ratelimit.limit(getKey(user.id))
@@ -96,6 +106,7 @@ export async function POST(req: NextRequest) {
       }
     )
   } catch (error) {
+    console.error('[guestbook] Error:', error)
     return NextResponse.json({ error }, { status: 400 })
   }
 }

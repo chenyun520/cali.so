@@ -57,7 +57,16 @@ export default authMiddleware({
   publicRoutes: [
     '/',
     '/studio(.*)',
-    '/api(.*)',
+    // 公开的 API 路由 (只读)
+    '/api/guestbook', // GET 是公开的, POST 需要认证
+    '/api/comments/(.*)', // GET 是公开的, POST 需要认证
+    '/api/clerk-users',
+    '/api/activity',
+    '/api/link-preview',
+    '/api/reactions',
+    '/api/tweet/(.*)',
+    '/api/favicon',
+    '/api/newsletter',
     '/blog(.*)',
     '/confirm(.*)',
     '/projects',
