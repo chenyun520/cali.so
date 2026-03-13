@@ -21,9 +21,9 @@ export default async function BlogHomePage() {
       {settings?.heroPhotos && <Photos photos={settings.heroPhotos} />}
 
       <Container className="mt-24 md:mt-28">
-        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-12 lg:grid-cols-[1fr_auto]">
+        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 lg:grid-cols-[1fr_auto]">
           {/* 左侧：近期文章 */}
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-4">
             <h2 className="flex items-center text-sm font-semibold text-zinc-900 dark:text-zinc-100">
               <PencilSwooshIcon className="h-5 w-5 flex-none" />
               <span className="ml-2">近期文章</span>
@@ -31,13 +31,13 @@ export default async function BlogHomePage() {
             <BlogPosts />
           </div>
 
-          {/* 右侧：项目展示 - 紧凑的方块网格 */}
-          <div className="flex flex-col gap-4 lg:w-48">
+          {/* 右侧：项目展示 */}
+          <div className="flex flex-col gap-4 lg:w-56">
             <h2 className="flex items-center text-sm font-semibold text-zinc-900 dark:text-zinc-100">
               <PresentationIcon className="h-5 w-5 flex-none" />
               <span className="ml-2">项目展示</span>
             </h2>
-            <HomeProjectList projects={projects} limit={9} />
+            <HomeProjectList projects={projects} limit={6} />
           </div>
         </div>
       </Container>

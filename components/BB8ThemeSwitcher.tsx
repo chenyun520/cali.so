@@ -37,10 +37,6 @@ export function BB8ThemeSwitcher() {
           <div className="bb8-toggle__star" />
           <div className="bb8-toggle__star" />
           <div className="bb8-toggle__star" />
-          {/* Clouds */}
-          <div className="bb8-toggle__cloud" />
-          <div className="bb8-toggle__cloud" />
-          <div className="bb8-toggle__cloud" />
           {/* Suns */}
           <div className="tatto-1" />
           <div className="tatto-2" />
@@ -48,6 +44,10 @@ export function BB8ThemeSwitcher() {
           <div className="gomrassen" />
           <div className="hermes" />
           <div className="chenini" />
+          {/* Clouds */}
+          <div className="bb8-toggle__cloud" />
+          <div className="bb8-toggle__cloud" />
+          <div className="bb8-toggle__cloud" />
         </div>
         {/* BB-8 Droid */}
         <div className="bb8">
@@ -58,7 +58,9 @@ export function BB8ThemeSwitcher() {
           </div>
           <div className="bb8__body" />
         </div>
-        <div className="bb8__shadow" />
+        <div className="artificial__hidden">
+          <div className="bb8__shadow" />
+        </div>
       </div>
     </label>
   )
