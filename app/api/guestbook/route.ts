@@ -96,7 +96,11 @@ export async function POST(req: NextRequest) {
   if (!userId) {
     console.log(`[guestbook][POST][${requestId}] No userId - returning 401`)
     return NextResponse.json(
-      { error: 'Not authenticated', requestId },
+      {
+        error: '登录已过期，请重新登录后留下评论',
+        code: 'AUTH_EXPIRED',
+        requestId
+      },
       { status: 401 }
     )
   }

@@ -133,7 +133,11 @@ export async function POST(req: NextRequest, { params }: Params) {
   if (!userId) {
     console.log(`[comments][POST][${requestId}] No userId from getAuth()`)
     return NextResponse.json(
-      { error: 'Not authenticated', requestId },
+      {
+        error: '登录已过期，请重新登录后留下评论',
+        code: 'AUTH_EXPIRED',
+        requestId
+      },
       { status: 401 }
     )
   }
