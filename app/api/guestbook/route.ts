@@ -1,6 +1,4 @@
 import { clerkClient, getAuth } from '@clerk/nextjs/server'
-import { Ratelimit } from '@upstash/ratelimit'
-import { Redis } from '@upstash/redis'
 import { type NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
 
@@ -13,11 +11,7 @@ import NewGuestbookEmail from '~/emails/NewGuestbook'
 import { env } from '~/env.mjs'
 import { url } from '~/lib'
 import { resend } from '~/lib/mail'
-
-const redis = new Redis({
-  url: env.UPSTASH_REDIS_REST_URL,
-  token: env.UPSTASH_REDIS_REST_TOKEN,
-})
+import { redis } from '~/lib/redis'
 
 function getKey(id?: string) {
   return `guestbook${id ? `:${id}` : ''}`
@@ -29,6 +23,7 @@ function generateRequestId(): string {
 
 async function safeRatelimit(limitKey: string) {
   try {
+    const { Ratelimit } = await import('@upstash/ratelimit')
     const ratelimit = new Ratelimit({
       redis,
       limiter: Ratelimit.slidingWindow(30, '10 s'),
