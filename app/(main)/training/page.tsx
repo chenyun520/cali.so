@@ -7,10 +7,10 @@ export default function TrainingPage() {
   const trainings = [
     {
       id: 'production-site-management',
-      title: '生产现场日常管理',
+      title: '生产现场日常管理培训',
       description: '系统性讲解生产现场管理的核心要点，包括5S管理、目视化管理、持续改善等内容',
       icon: '🎯',
-      link: '/lean-academy-presentation.html',
+      link: '/production-training.html',
       badge: '热门',
     },
   ]

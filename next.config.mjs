@@ -18,6 +18,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: '**.cherishbloom.top',
       },
+      {
+        protocol: 'https',
+        hostname: 'img.clerk.com',
+      },
     ],
   },
 
