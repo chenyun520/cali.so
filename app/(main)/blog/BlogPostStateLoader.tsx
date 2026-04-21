@@ -1,7 +1,7 @@
 'use client'
 
-import React from 'react'
 import { useQuery } from '@tanstack/react-query'
+import React from 'react'
 
 import { addComment, blogPostState } from '~/app/(main)/blog/blog-post.state'
 import { type PostIDLessCommentDto } from '~/db/dto/comment.dto'

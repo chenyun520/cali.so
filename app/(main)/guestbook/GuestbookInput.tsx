@@ -1,6 +1,7 @@
 'use client'
 
 import { useClerk, useUser } from '@clerk/nextjs'
+import { useMutation } from '@tanstack/react-query'
 import { clsxm } from '@zolplay/utils'
 import {
   AnimatePresence,
@@ -10,7 +11,6 @@ import {
 } from 'framer-motion'
 import Image from 'next/image'
 import React from 'react'
-import { useMutation } from '@tanstack/react-query'
 import { useReward } from 'react-rewards'
 import TextareaAutosize from 'react-textarea-autosize'
 

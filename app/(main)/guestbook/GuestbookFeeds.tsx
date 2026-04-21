@@ -2,11 +2,11 @@
 
 import 'dayjs/locale/zh-cn'
 
+import { useQuery } from '@tanstack/react-query'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import Image from 'next/image'
 import React from 'react'
-import { useQuery } from '@tanstack/react-query'
 import { useSnapshot } from 'valtio'
 
 import { CommentMarkdown } from '~/components/CommentMarkdown'

@@ -1,9 +1,9 @@
 'use client'
 
+import { useQuery } from '@tanstack/react-query'
 import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
 import React from 'react'
-import { useQuery } from '@tanstack/react-query'
 
 import { Tooltip } from '~/components/ui/Tooltip'
 

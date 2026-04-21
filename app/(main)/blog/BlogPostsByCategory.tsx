@@ -6,6 +6,7 @@ import {
   getLatestBlogPosts,
   searchBlogPosts,
 } from '~/sanity/queries'
+import { type Post } from '~/sanity/schemas/post'
 
 import { BlogPostCard } from './BlogPostCard'
 
@@ -19,7 +20,7 @@ export async function BlogPostsByCategory({
   limit?: number
 }) {
   // 搜索优先
-  let posts
+  let posts: Post[] | null
   if (searchQuery) {
     posts = await searchBlogPosts(searchQuery, limit)
   } else if (selectedCategory) {
