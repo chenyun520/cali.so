@@ -1,12 +1,12 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import Image from 'next/image'
 import React from 'react'
 
 import { UsersIcon } from '~/assets'
-import { ClerkUserStats } from '~/components/ClerkUserStats'
 import { TextRotate } from '~/components/fancy/text/text-rotate'
+
+const FIXED_MEMBERS = 25
 
 export function Newsletter({ _subCount }: { _subCount?: string }) {
   return (
@@ -34,59 +34,36 @@ export function Newsletter({ _subCount }: { _subCount?: string }) {
           </div>
         </div>
 
-        {/* 右侧：统计内容 */}
-        <ClerkUserStats
-          fallback={
-            <div className="flex items-center gap-3">
-              <div className="h-8 w-8 animate-pulse rounded-full bg-zinc-300 dark:bg-zinc-600" />
-              <div className="h-4 w-20 animate-pulse rounded bg-zinc-300 dark:bg-zinc-600" />
-            </div>
-          }
-          render={(users, totalUsers) => (
-            <div className="flex items-center gap-4">
-              {/* 用户头像 */}
-              <div className="flex -space-x-2">
-                {users.slice(0, 4).map((user, index) => (
-                  <div
-                    key={user.id}
-                    className="relative h-8 w-8 rounded-full ring-2 ring-zinc-100 dark:ring-zinc-800 overflow-hidden bg-gradient-to-br from-lime-400 to-emerald-500"
-                    style={{ zIndex: 4 - index }}
-                  >
-                    {user.image_url ? (
-                      <Image
-                        src={user.image_url}
-                        alt={user.full_name || 'User'}
-                        fill
-                        className="object-cover"
-                      />
-                    ) : (
-                      <span className="flex h-full w-full items-center justify-center text-xs font-medium text-white">
-                        {(user.full_name || user.first_name || '?')[0].toUpperCase()}
-                      </span>
-                    )}
-                  </div>
-                ))}
-                {totalUsers > 4 && (
-                  <div className="relative flex h-8 w-8 items-center justify-center rounded-full ring-2 ring-zinc-100 dark:ring-zinc-800 bg-zinc-200 dark:bg-zinc-700">
-                    <span className="text-xs font-medium text-zinc-600 dark:text-zinc-300">
-                      +{totalUsers - 4}
-                    </span>
-                  </div>
-                )}
+        {/* 右侧：固定统计 */}
+        <div className="flex items-center gap-4">
+          <div className="flex -space-x-2">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div
+                key={i}
+                className="relative h-8 w-8 rounded-full ring-2 ring-zinc-100 dark:ring-zinc-800 overflow-hidden bg-gradient-to-br from-lime-400 to-emerald-500"
+                style={{ zIndex: 4 - i }}
+              >
+                <span className="flex h-full w-full items-center justify-center text-xs font-medium text-white">
+                  {String.fromCharCode(65 + i)}
+                </span>
               </div>
+            ))}
+            <div className="relative flex h-8 w-8 items-center justify-center rounded-full ring-2 ring-zinc-100 dark:ring-zinc-800 bg-zinc-200 dark:bg-zinc-700">
+              <span className="text-xs font-medium text-zinc-600 dark:text-zinc-300">
+                +{FIXED_MEMBERS - 4}
+              </span>
+            </div>
+          </div>
 
-              {/* 人数统计 */}
-              <div className="flex items-baseline gap-1">
-                <span className="text-3xl font-bold text-zinc-900 dark:text-zinc-100">
-                  {totalUsers}
-                </span>
-                <span className="text-xs text-zinc-500 dark:text-zinc-400">
-                  members
-                </span>
-              </div>
-            </div>
-          )}
-        />
+          <div className="flex items-baseline gap-1">
+            <span className="text-3xl font-bold text-zinc-900 dark:text-zinc-100">
+              {FIXED_MEMBERS}
+            </span>
+            <span className="text-xs text-zinc-500 dark:text-zinc-400">
+              members
+            </span>
+          </div>
+        </div>
       </motion.div>
 
       {/* 卡片二：跳动单词 */}
