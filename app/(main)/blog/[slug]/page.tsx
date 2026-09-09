@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation'
 import { BlogPostPage } from '~/app/(main)/blog/BlogPostPage'
 import { kvKeys } from '~/config/kv'
 import { env } from '~/env.mjs'
-import { url } from '~/lib'
 import { redis } from '~/lib/redis'
 import { getAllLatestBlogPostSlugs, getBlogPost } from '~/sanity/queries'
 
@@ -86,17 +85,8 @@ export default async function BlogPage({
 
   let reactions: number[] = [0, 0, 0, 0]
   try {
-    const res = await fetch(url(`/api/reactions?id=${post._id}`), {
-      cache: 'no-store',
-    })
-    if (res.ok) {
-      const data = await res.json()
-      if (Array.isArray(data) && data.length === 4) {
-        reactions = data
-      }
-    } else {
-      console.warn('Reactions API returned non-ok status:', res.status)
-    }
+    const data = await redis.get<number[]>(`reactions:${post._id}`)
+    if (Array.isArray(data) && data.length === 4) reactions = data
   } catch (error) {
     console.error('Failed to fetch reactions:', error)
   }

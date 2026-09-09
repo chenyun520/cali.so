@@ -22,9 +22,6 @@ export async function GET(req: NextRequest) {
   if (!id) return new Response('Missing id', { status: 400 })
 
   const value = await redis.get<number[]>(`reactions:${id}`)
-  if (!value) {
-    await redis.set(getKey(id), [0, 0, 0, 0])
-  }
 
   const { success } = await ratelimit.limit(getKey(id) + `_${req.ip ?? ''}`)
   if (!success) {
@@ -33,7 +30,9 @@ export async function GET(req: NextRequest) {
     })
   }
 
-  return NextResponse.json(value ?? [0, 0, 0, 0])
+  return NextResponse.json(value ?? [0, 0, 0, 0], {
+    headers: { 'Cache-Control': 'no-store' },
+  })
 }
 
 export async function PATCH(req: NextRequest) {

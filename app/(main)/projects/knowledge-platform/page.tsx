@@ -67,6 +67,8 @@ function Screen({
         aria-label={`${alt}，在新标签页查看大图`}
       >
         <Image
+          unoptimized
+          loading="eager"
           src={`/projects/knowledge-platform/${name}.webp`}
           alt={alt}
           width={name === 'review' || name === 'tasks' ? 1280 : 1265}
@@ -136,6 +138,7 @@ export default function KnowledgePlatformPage() {
 
         <figure className={styles.cover}>
           <Image
+            unoptimized
             src="/projects/knowledge-platform/cover.webp"
             alt="保温杯产品、工程图纸与晨光中的制造车间，平台品牌插画"
             width={1487}

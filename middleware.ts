@@ -9,7 +9,7 @@ export const config = {
 }
 
 async function beforeAuthMiddleware(req: NextRequest) {
-  const { geo, nextUrl } = req
+  const { nextUrl } = req
   const isApi = nextUrl.pathname.startsWith('/api/')
 
   try {
@@ -51,6 +51,8 @@ export default authMiddleware({
     '/projects',
     '/projects/knowledge-platform',
     '/training',
+    '/sign-in(.*)',
+    '/sign-up(.*)',
     '/guestbook',
     '/newsletters(.*)',
     '/about',

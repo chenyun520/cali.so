@@ -29,6 +29,7 @@ export function KnowledgePlatformFeature() {
       </div>
       <div className={styles.featureVisual}>
         <Image
+          unoptimized
           src="/projects/knowledge-platform/cover.webp"
           alt="晨光中的制造车间、保温杯与工程图纸，平台品牌插画"
           width={1487}

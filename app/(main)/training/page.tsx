@@ -3,6 +3,8 @@ import React from 'react'
 import { PresentationIcon } from '~/assets'
 import { Container } from '~/components/ui/Container'
 
+import { ReportsSection } from './ReportsSection'
+
 function ServiceCard3D({
   title,
   items,
@@ -215,6 +217,8 @@ export default function TrainingPage() {
           </a>
         ))}
       </div>
+
+      <ReportsSection />
 
       {/* 服务广告模块 */}
       <section className="mt-16">

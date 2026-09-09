@@ -1,5 +1,6 @@
 'use client'
 
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   motion,
   type MotionValue,
@@ -36,26 +37,52 @@ export function BlogReactions({
     },
     [mouseY]
   )
-  const [cachedReactions, setCachedReactions] = React.useState(
-    reactions ?? [0, 0, 0, 0]
-  )
-  const onClick = React.useCallback(
-    async (index: number) => {
-      // Optimistic update
-      setCachedReactions((prev) => {
-        const next = [...prev]
-        next[index]++
-        return next
-      })
-
-      const res = await fetch(`/api/reactions?id=${_id}&index=${index}`, {
-        method: 'PATCH',
-      })
-      const { data } = (await res.json()) as { data: number[] }
-      setCachedReactions(data)
+  const client = useQueryClient()
+  const queryKey = ['reactions', _id]
+  const { data: cachedReactions } = useQuery({
+    queryKey,
+    initialData: reactions ?? [0, 0, 0, 0],
+    staleTime: 0,
+    refetchOnMount: 'always',
+    queryFn: async ({ signal }) => {
+      const response = await fetch(
+        `/api/reactions?id=${encodeURIComponent(_id)}`,
+        {
+          cache: 'no-store',
+          signal,
+        }
+      )
+      if (!response.ok) throw new Error('点赞数量加载失败')
+      return readCounts(await response.json())
     },
-    [_id]
-  )
+  })
+  const mutation = useMutation({
+    mutationFn: async (index: number) => {
+      const response = await fetch(
+        `/api/reactions?id=${encodeURIComponent(_id)}&index=${index}`,
+        { method: 'PATCH' }
+      )
+      if (!response.ok) throw new Error('点赞未成功，请稍后重试')
+      const result = await response.json()
+      return readCounts(result.data)
+    },
+    onMutate: async (index) => {
+      await client.cancelQueries({ queryKey })
+      const previous = client.getQueryData<number[]>(queryKey)
+      client.setQueryData(
+        queryKey,
+        (previous ?? [0, 0, 0, 0]).map(
+          (count, i) => count + (i === index ? 1 : 0)
+        )
+      )
+      return { previous }
+    },
+    onError: (_error, _index, context) => {
+      if (context?.previous) client.setQueryData(queryKey, context.previous)
+    },
+    onSuccess: (data) => client.setQueryData(queryKey, data),
+    onSettled: () => client.invalidateQueries({ queryKey }),
+  })
 
   return (
     <motion.div
@@ -86,9 +113,19 @@ export function BlogReactions({
           y={mouseY}
           image={`/reactions/${reaction}.png`}
           count={cachedReactions[idx]}
-          onClick={() => onClick(idx)}
+          onClick={() => mutation.mutate(idx)}
+          disabled={mutation.isPending}
+          label={reaction}
         />
       ))}
+      {mutation.isError && (
+        <span
+          role="alert"
+          className="absolute top-full mt-2 w-32 rounded-lg bg-white p-2 text-xs text-red-700 shadow dark:bg-zinc-900"
+        >
+          点赞未成功，请稍后重试
+        </span>
+      )}
     </motion.div>
   )
 }
@@ -98,7 +135,11 @@ function ReactIcon({
   image,
   count = 0,
   onClick,
+  disabled,
+  label,
 }: {
+  disabled: boolean
+  label: string
   y: MotionValue
   image: string
   count?: number
@@ -123,6 +164,8 @@ function ReactIcon({
     <motion.button
       ref={ref}
       type="button"
+      disabled={disabled}
+      aria-label={`${label}，${count} 次反应`}
       style={{ height }}
       className="relative aspect-square h-8"
       whileTap={{
@@ -139,9 +182,20 @@ function ReactIcon({
         fill
         unoptimized
       />
-      <span className="absolute -bottom-6 left-0 flex w-full items-center justify-center whitespace-nowrap text-[12px] font-semibold text-zinc-700/30 dark:text-zinc-200/25">
+      <span className="absolute -bottom-6 left-0 flex w-full items-center justify-center whitespace-nowrap text-[12px] font-semibold text-zinc-600 dark:text-zinc-300">
         {prettifyNumber(count, true)}
       </span>
     </motion.button>
   )
+}
+
+function readCounts(value: unknown): number[] {
+  const counts = typeof value === 'string' ? JSON.parse(value) : value
+  if (
+    !Array.isArray(counts) ||
+    counts.length !== 4 ||
+    !counts.every((count) => Number.isInteger(count) && count >= 0)
+  )
+    throw new Error('点赞数据格式错误')
+  return counts as number[]
 }
