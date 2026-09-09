@@ -18,6 +18,10 @@ export default async function sitemap() {
       lastModified: new Date(),
     },
     {
+      url: url('/projects/knowledge-platform').href,
+      lastModified: new Date('2026-09-09'),
+    },
+    {
       url: url('/guestbook').href,
       lastModified: new Date(),
     },

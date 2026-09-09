@@ -4,6 +4,8 @@ import { Projects } from '~/app/(main)/projects/Projects'
 import { Container } from '~/components/ui/Container'
 import { getSettings } from '~/sanity/queries'
 
+import { KnowledgePlatformFeature } from './KnowledgePlatformFeature'
+
 const title = '我的项目'
 const description =
   '多年来，我一直在做各种各样的小项目，这里就是我筛选出来我觉得还不错的项目合集，也是我在技术领域中尝试和探索的最好见证。'
@@ -38,8 +40,16 @@ export default async function ProjectsPage() {
         </p>
       </header>
       <div className="mt-16 sm:mt-20">
-        <Projects projects={projects} />
+        <KnowledgePlatformFeature />
       </div>
+      {projects.length > 0 && (
+        <section className="mt-16 sm:mt-20" aria-labelledby="more-projects">
+          <h2 id="more-projects" className="mb-8 text-xl font-semibold text-zinc-800 dark:text-zinc-100">
+            更多项目与探索
+          </h2>
+          <Projects projects={projects} limit={projects.length} />
+        </section>
+      )}
     </Container>
   )
 }
